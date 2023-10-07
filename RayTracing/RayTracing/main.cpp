@@ -4,9 +4,8 @@
 //
 //  Created by Aleksandr Borodulin on 27.09.2023.
 //
-
+#include "color.h"
 #include <iostream>
-#include <fstream>
 
 int main(int argc, const char * argv[]) {
     // Image
@@ -28,11 +27,8 @@ int main(int argc, const char * argv[]) {
             auto g = double(j) / (image_height-1);
             auto b = 0;
 
-            int ir = static_cast<int>(255.999 * r);
-            int ig = static_cast<int>(255.999 * g);
-            int ib = static_cast<int>(255.999 * b);
-
-            output << ir << ' ' << ig << ' ' << ib << '\n';
+            auto pixel_color = color(r, g, b);
+            write_color(output, pixel_color);
         }
     }
 
