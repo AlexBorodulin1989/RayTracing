@@ -28,6 +28,8 @@
 		9D7455FC2AC49BCE000A0C8C /* RayTracing */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RayTracing; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D7455FF2AC49BCE000A0C8C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		9D9D89A82ACB36B7007A03AC /* vec3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vec3.h; sourceTree = "<group>"; };
+		9DAFCBC32AE30F3D00CC5FB6 /* hittable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hittable.h; sourceTree = "<group>"; };
+		9DAFCBC42AE3106500CC5FB6 /* sphere.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sphere.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +47,8 @@
 			isa = PBXGroup;
 			children = (
 				9D6654572ACDDEAF00F4A262 /* ray.h */,
+				9DAFCBC32AE30F3D00CC5FB6 /* hittable.h */,
+				9DAFCBC42AE3106500CC5FB6 /* sphere.h */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
