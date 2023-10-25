@@ -22,8 +22,28 @@ double hit_sphere(const point3& center, double radius, const ray& r) {
     }
 }
 
+bool hit_ellipse(const point3& center1, const ray& r1) {
+    double alpha = 1;
+    double betta = 0.5;
+    double gamma = 0.5;
+
+    auto rayModif = ray(point3(r1.origin().x() / alpha, r1.origin().y() / betta, r1.origin().z() / gamma),
+                      point3(r1.direction().x() / alpha, r1.direction().y() / betta, r1.direction().z() / gamma));
+
+    auto centerModif = point3(center1.x() / alpha,
+                            center1.y() / betta,
+                            center1.z() / gamma);
+
+    vec3 oc = rayModif.origin() - centerModif;
+    auto a = dot(rayModif.direction(), rayModif.direction());
+    auto b = 2.0 * dot(oc, rayModif.direction());
+    auto c = dot(oc, oc) - 1;
+    auto discriminant = b*b - 4*a*c;
+    return (discriminant >= 0);
+}
+
 color ray_color(const ray& r) {
-    auto t = hit_sphere(point3(0, 0, -1), 0.5, r);
+    auto t = hit_ellipse(point3(0, 0, -1), r);//hit_sphere(point3(0, 0, -1), 0.5, r);
     if (t > 0.0) {
         vec3 N = unit_vector(r.at(t) - vec3(0, 0, -1));
         return 0.5*color(N.x() + 1, N.y() + 1, N.z() + 1);
