@@ -22,10 +22,11 @@ double hit_sphere(const point3& center, double radius, const ray& r) {
     }
 }
 
-bool hit_ellipse(const point3& center1, const ray& r1) {
-    double alpha = 1;
-    double betta = 0.5;
-    double gamma = 0.5;
+double hit_ellipse(const point3& center1,
+                 const ray& r1,
+                 const double& alpha,
+                 const double& betta,
+                 const double& gamma) {
 
     auto rayModif = ray(point3(r1.origin().x() / alpha, r1.origin().y() / betta, r1.origin().z() / gamma),
                       point3(r1.direction().x() / alpha, r1.direction().y() / betta, r1.direction().z() / gamma));
@@ -36,16 +37,37 @@ bool hit_ellipse(const point3& center1, const ray& r1) {
 
     vec3 oc = rayModif.origin() - centerModif;
     auto a = dot(rayModif.direction(), rayModif.direction());
-    auto b = 2.0 * dot(oc, rayModif.direction());
+    auto half_b = dot(oc, rayModif.direction());
     auto c = dot(oc, oc) - 1;
-    auto discriminant = b*b - 4*a*c;
-    return (discriminant >= 0);
+    auto discriminant = half_b*half_b - a*c;
+
+    if (discriminant < 0) {
+        return -1.0;
+    } else {
+        return (-half_b - sqrt(discriminant)) / (a);
+    }
 }
 
 color ray_color(const ray& r) {
-    auto t = hit_ellipse(point3(0, 0, -1), r);//hit_sphere(point3(0, 0, -1), 0.5, r);
+    // hit sphere
+    auto spherePos = point3(0, 0, -1);
+    auto t = hit_sphere(spherePos, 0.5, r);
     if (t > 0.0) {
-        vec3 N = unit_vector(r.at(t) - vec3(0, 0, -1));
+        vec3 N = unit_vector(r.at(t) - spherePos);
+        return 0.5*color(N.x() + 1, N.y() + 1, N.z() + 1);
+    }
+
+    // hit ellipse
+    double alpha = 1;
+    double betta = 0.5;
+    double gamma = 0.5;
+    auto ellipsePos = point3(0, 0, -1);
+    t = hit_ellipse(ellipsePos, r, alpha, betta, gamma);
+    if (t > 0.0) {
+        auto centeredPosition = r.at(t) - ellipsePos;
+        vec3 N = unit_vector(vec3(centeredPosition.x() / (alpha * alpha),
+                                  centeredPosition.y() / (betta * betta),
+                                  centeredPosition.z() / (gamma * gamma)));
         return 0.5*color(N.x() + 1, N.y() + 1, N.z() + 1);
     }
 
